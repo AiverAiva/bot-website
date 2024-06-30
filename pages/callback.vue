@@ -11,6 +11,7 @@
   import { ref, onMounted } from 'vue'
   import axios from 'axios'
   
+  const config = useRuntimeConfig()
   const user = ref(null)
   
   onMounted(async () => {
