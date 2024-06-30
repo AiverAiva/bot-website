@@ -16,9 +16,9 @@
   onMounted(async () => {
     const code = new URLSearchParams(window.location.search).get('code')
     console.log(code)
-    const { data } = await axios.get(`https://discord.weikuwu.me/callback?code=${code}`)
+    const { data } = await axios.get(`${config.public.API_URL}/callback?code=${code}`)
     const accessToken = data.access_token
-    const userResponse = await axios.get(`http://discord.weikuwu.me/user?access_token=${accessToken}`)
+    const userResponse = await axios.get(`${config.public.API_URL}/user?access_token=${accessToken}`)
     user.value = userResponse.data
   })
   </script>

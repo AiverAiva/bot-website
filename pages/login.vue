@@ -7,10 +7,12 @@
   
   <script setup>
   import { useRouter } from 'vue-router'
+
+  const config = useRuntimeConfig()
   const router = useRouter()
   
   const login = () => {
-    window.location.href = 'http://localhost:8000/login'
+    window.location.href = `${config.public.API_URL}/login`
   }
   </script>
   
