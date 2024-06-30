@@ -6,4 +6,13 @@ export default defineNuxtConfig({
       API_URL: process.env.API_URL || 'localhost:8000', // Fallback to port 8000 if the environment variable is not set
     },
   },
+  css: ['~/assets/css/tailwind.css'],
+  postcss: {
+    plugins: {
+      'postcss-import': {},
+      'tailwindcss/nesting': {},
+      tailwindcss: {},
+      autoprefixer: {},
+    },
+  },
 })
