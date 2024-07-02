@@ -3,8 +3,9 @@
       <div
         :class="{
           'bg-transparent': true,
-          'bg-gradient-to-b from-gray-900 to-transparent opacity-60': isScrolled,
-          'transition-opacity duration-500': true,
+          'bg-gradient-to-b from-gray-900 to-transparent': isScrolled,
+        //   'opacity-60': isScrolled,
+        //   'transition-opacity duration-300': true,
         }"
         class="h-16 flex items-center px-8"
       >
@@ -13,9 +14,9 @@
             to="/"
             class="text-lg text-pink-500 transition-transform duration-300 transform hover:scale-110"
             :class="{
-              'opacity-100': !isScrolled && !isHoveredButtonHome,
+              'opacity-100': !isScrolled || isHoveredButtonHome,
               'opacity-60': isScrolled && !isHoveredButtonHome,
-              'scale-110': isHoveredButtonHome,
+              'transition-opacity duration-300': true,
             }"
             @mouseenter="isHoveredButtonHome = true"
             @mouseleave="isHoveredButtonHome = false"
@@ -24,9 +25,9 @@
             to="/login"
             class="text-lg text-pink-500 transition-transform duration-300 transform hover:scale-110"
             :class="{
-              'opacity-100': !isScrolled && !isHoveredButtonLogin,
+              'opacity-100': !isScrolled || isHoveredButtonLogin,
               'opacity-60': isScrolled && !isHoveredButtonLogin,
-              'scale-110': isHoveredButtonLogin,
+              'transition-opacity duration-300': true,
             }"
             @mouseenter="isHoveredButtonLogin = true"
             @mouseleave="isHoveredButtonLogin = false"
@@ -43,8 +44,9 @@
               alt="User Avatar"
               class="w-10 h-10 rounded-full cursor-pointer transform transition-transform duration-300 hover:scale-110"
               :class="{
-                'opacity-100': isHoveredAvatar || showMenu,
-                'opacity-60': !isHoveredAvatar && !showMenu && isScrolled,
+                'opacity-100': !isScrolled || isHoveredAvatar || showMenu,
+                'opacity-60': isScrolled && !isHoveredAvatar && !showMenu,
+                'transition-opacity duration-300': true,
               }"
             />
             <div
