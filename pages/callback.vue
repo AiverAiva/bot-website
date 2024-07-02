@@ -36,6 +36,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { useMainStore } from '~/stores/index'
 
@@ -43,6 +44,7 @@ const store = useMainStore()
 const config = useRuntimeConfig()
 const isLoading = ref(true)
 const guilds = computed(() => store.guilds)
+const router = useRouter()
 
 const PERMISSIONS_INTEGER = '268436480' 
 
@@ -60,7 +62,6 @@ const defaultIconUrl = 'https://cdn.discordapp.com/embed/avatars/0.png'
 const getIconUrl = (guild) => !guild.icon ? defaultIconUrl : `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`
 const generateInviteLink = (guildId) => `https://discord.com/oauth2/authorize?client_id=${config.public.DISCORD_CLIENT_ID}&permissions=${PERMISSIONS_INTEGER}&scope=bot&guild_id=${guildId}`
 
-
 onMounted(async () => {
   try {
     const code = new URLSearchParams(window.location.search).get('code')
@@ -69,6 +70,7 @@ onMounted(async () => {
     const Response = await axios.get(`${config.public.API_URL}/user?accessToken=${accessToken}`)
     store.setUser(Response.data.user)
     store.setGuilds(Response.data.user_guilds.filter(guild => hasManageServerPermission(guild)))
+    router.push('/dashboard') // Redirect to dashboard after setting user and guilds
   } catch (error) {
     console.error("Error fetching data:", error)
   } finally {

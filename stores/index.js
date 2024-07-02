@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 export const useMainStore = defineStore('main', {
   state: () => ({
     user: null,
-    guilds: [],
+    guilds: []
   }),
   actions: {
     setUser(user) {
@@ -12,5 +12,10 @@ export const useMainStore = defineStore('main', {
     setGuilds(guilds) {
       this.guilds = guilds
     },
-  },
+    logout() {
+      localStorage.removeItem('accessToken')
+      this.user = null
+      this.guilds = []
+    }
+  }
 })
