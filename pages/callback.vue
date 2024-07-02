@@ -14,8 +14,20 @@
         <div>
           <h2 class="text-xl font-bold">{{ guild.name }}</h2>
           <p class="text-sm">ID: {{ guild.id }}</p>
-          <button v-if="guild.has_bot" class="mt-2 bg-gray-800 text-white py-1 px-2 rounded hover:bg-gray-700 transition">Manage</button>
-          <button v-else class="mt-2 bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-400 transition">Invite to server</button>
+          <a
+            v-if="guild.has_bot"
+            :href="`/manage-server/${guild.id}`"
+            class="mt-2 bg-gray-800 text-white py-1 px-2 rounded hover:bg-gray-700 transition"
+          >
+            Manage
+          </a>
+          <a
+            v-else
+            :href="generateInviteLink(guild.id)"
+            class="mt-2 bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-400 transition"
+          >
+            Invite to server
+          </a>
         </div>
       </div>
     </div>
@@ -32,6 +44,8 @@ const config = useRuntimeConfig()
 const isLoading = ref(true)
 const guilds = computed(() => store.guilds)
 
+const PERMISSIONS_INTEGER = '268436480' 
+
 const hasManageServerPermission = (guild) => {
   const permissions = BigInt(guild.permissions)
   const MANAGE_SERVER = BigInt(0x20)
@@ -44,6 +58,8 @@ const sortedGuilds = computed(() => {
 
 const defaultIconUrl = 'https://cdn.discordapp.com/embed/avatars/0.png'
 const getIconUrl = (guild) => !guild.icon ? defaultIconUrl : `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`
+const generateInviteLink = (guildId) => `https://discord.com/oauth2/authorize?client_id=${config.public.DISCORD_CLIENT_ID}&permissions=${PERMISSIONS_INTEGER}&scope=bot&guild_id=${guildId}`
+
 
 onMounted(async () => {
   try {
