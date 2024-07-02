@@ -3,7 +3,7 @@
     <div
       :class="{
         'bg-transparent': true,
-        'bg-gradient-to-b from-gray-900 to-transparent opacity-60': isScrolled,
+        'bg-gradient-to-b from-gray-900 to-transparent': isScrolled,
         'transition-opacity duration-500': true,
       }"
       class="h-16 flex items-center px-8"
@@ -16,6 +16,7 @@
             'opacity-100': !isScrolled && !isHoveredButtonHome,
             'opacity-60': isScrolled && !isHoveredButtonHome,
             'scale-110': isHoveredButtonHome,
+            'transition-opacity duration-500': true,
           }"
           @mouseenter="isHoveredButtonHome = true"
           @mouseleave="isHoveredButtonHome = false"
@@ -28,6 +29,7 @@
             'opacity-100': !isScrolled && !isHoveredButtonLogin,
             'opacity-60': isScrolled && !isHoveredButtonLogin,
             'scale-110': isHoveredButtonLogin,
+            'transition-opacity duration-500': true,
           }"
           @mouseenter="isHoveredButtonLogin = true"
           @mouseleave="isHoveredButtonLogin = false"
@@ -40,6 +42,7 @@
             'opacity-100': !isScrolled && !isHoveredButtonDashboard,
             'opacity-60': isScrolled && !isHoveredButtonDashboard,
             'scale-110': isHoveredButtonDashboard,
+            'transition-opacity duration-500': true,
           }"
           @mouseenter="isHoveredButtonDashboard = true"
           @mouseleave="isHoveredButtonDashboard = false"
@@ -58,6 +61,7 @@
             :class="{
               'opacity-100': isHoveredAvatar || showMenu,
               'opacity-60': !isHoveredAvatar && !showMenu && isScrolled,
+              'transition-opacity duration-500': true,
             }"
           />
           <div
