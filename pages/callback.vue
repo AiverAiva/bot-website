@@ -8,7 +8,7 @@
     <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       <div v-for="guild in sortedGuilds" :key="guild.id"
         :class="{ 'bg-green-500': guild.has_bot, 'bg-gray-700': !guild.has_bot }"
-        class="p-4 rounded-lg shadow-lg text-white flex items-center space-x-4 transform transition-transform duration-300 hover:scale-110"
+        class="p-4 rounded-lg shadow-lg text-white flex items-center space-x-4 transform transition-transform duration-300 hover:scale-110" 
       >
         <img :src="getIconUrl(guild)" alt="Server Icon" class="w-12 h-12 rounded-full">
         <div>
@@ -28,7 +28,7 @@
           >
             Invite to server
           </a>
-        </div>
+        </div>  
       </div>
     </div>
   </div>
