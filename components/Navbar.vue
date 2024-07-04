@@ -1,13 +1,6 @@
 <template>
   <nav class="fixed top-0 left-0 right-0 z-10">
-    <div
-      :class="{
-        'bg-transparent': true,
-        'bg-gradient-to-b from-gray-900 to-transparent': isScrolled,
-        'transition-opacity duration-500': true,
-      }"
-      class="h-16 flex items-center px-8"
-    >
+    <div class="h-16 flex items-center px-8 bg-gradient-to-b from-gray-900 to-transparent" >
       <div class="flex items-center space-x-8">
         <NuxtLink
           to="/"
