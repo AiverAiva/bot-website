@@ -79,10 +79,10 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { useMainStore } from '~/stores/index'
+import { useStore } from '~/stores/index'
 import { useRouter } from 'vue-router'
 
-const store = useMainStore()
+const store = useStore()
 const router = useRouter()
 
 const user = computed(() => store.user)

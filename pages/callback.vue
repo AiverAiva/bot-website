@@ -3,7 +3,7 @@
     <div class="pt-16"></div>
     <div class="pt-16"></div>
     <div v-if="isLoading" class="flex items-center justify-center h-64">
-      <div class="loader"></div>
+      <Loader />
     </div>
   </div>
 </template>
@@ -12,17 +12,19 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
-import { useMainStore } from '~/stores/index'
+// import { useNuxtStore } from '~/composables/useStore.js'
 
-const store = useMainStore()
+import { useStore } from '~/stores/index'
+const store = useStore()
+// const store = useMainStore()
 const config = useRuntimeConfig()
 const isLoading = ref(true)
 const router = useRouter()
 
 const hasManageServerPermission = (guild) => {
-  const permissions = BigInt(guild.permissions)
-  const MANAGE_SERVER = BigInt(0x20)
-  return (permissions & MANAGE_SERVER) === MANAGE_SERVER
+    const permissions = BigInt(guild.permissions)
+    const MANAGE_SERVER = BigInt(0x20)
+    return (permissions & MANAGE_SERVER) === MANAGE_SERVER
 }
 
 onMounted(async () => {
@@ -30,10 +32,13 @@ onMounted(async () => {
     const code = new URLSearchParams(window.location.search).get('code')
     const { data } = await axios.get(`${config.public.API_URL}/callback?code=${code}`)
     const accessToken = data.accessToken
+    store.setAccessToken(accessToken)
+
     const Response = await axios.get(`${config.public.API_URL}/user?accessToken=${accessToken}`)
     store.setUser(Response.data.user)
     store.setGuilds(Response.data.user_guilds.filter(guild => hasManageServerPermission(guild)))
-    router.push('/dashboard') // Redirect to dashboard after setting user and guilds
+    router.push('/dashboard')
+    // Redirect to dashboard after setting user and guilds
   } catch (error) {
     console.error("Error fetching data:", error)
   } finally {
@@ -41,24 +46,3 @@ onMounted(async () => {
   }
 })
 </script>
-
-<style>
-.loader {
-  border: 8px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top: 8px solid white;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-</style>

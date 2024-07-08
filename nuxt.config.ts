@@ -12,7 +12,12 @@ export default defineNuxtConfig({
   },
   modules: [
     '@pinia/nuxt',
-  ],   
+  ],
+  plugins: ['~/plugins/pinia-persistedstate.js'],
+  components: {
+    global: true,
+    dirs: ['~/components']
+  },
   css: ['~/assets/css/tailwind.css'],
   postcss: {
     plugins: {
