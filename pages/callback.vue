@@ -12,11 +12,9 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
-// import { useNuxtStore } from '~/composables/useStore.js'
-
 import { useStore } from '~/stores/index'
+
 const store = useStore()
-// const store = useMainStore()
 const config = useRuntimeConfig()
 const isLoading = ref(true)
 const router = useRouter()

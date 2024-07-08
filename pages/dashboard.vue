@@ -32,7 +32,6 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
-// import { useNuxtStore } from '~/composables/useStore.js'
 import { useStore } from '~/stores/index'
 
 const store = useStore()

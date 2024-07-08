@@ -15,7 +15,6 @@ export const useStore = defineStore('main', () => {
   }
 
   const setAccessToken = (newAccessToken) => {
-    // console.log('Setting access token:', newAccessToken)
     accessToken.value = newAccessToken
   }
 
