@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen bg-gray-900 text-white p-4">
     <div class="pt-16"></div>
-
     <div class="max-w-4xl mx-auto py-8" v-if="server">
       <button @click="goBack" class="text-white py-2 px-4 rounded hover:bg-gray-700 transition mb-6">
         &larr; Back
@@ -40,29 +39,48 @@
         <p>Additional server settings can go here.</p>
       </div>
     </div>
+    <div v-else-if="error" class="flex items-center justify-center h-64">
+      <div class="text-center">
+        <p class="text-red-500 text-lg mb-4">You do not have permission to access this server's settings.</p>
+        <button @click="goBack" class="text-white py-2 px-4 rounded bg-gray-700 hover:bg-gray-600 transition">
+          &larr; Back
+        </button>
+      </div>
+    </div>
     <div v-else class="flex items-center justify-center h-64">
-      <div class="loader"></div>
+      <Loader />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, onMounted, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
+import { useStore } from '~/stores/index'
 
 const config = useRuntimeConfig()
+const store = useStore()
 const route = useRoute()
 const router = useRouter()
 const serverId = route.params.id
 const server = ref(null)
+const error = ref(null)
+
+const accessToken = computed(() => store.accessToken)
 
 const fetchServerDetails = async () => {
   try {
-    const { data } = await axios.get(`${config.public.API_URL}/server/${serverId}`)
+    const { data } = await axios.get(`${config.public.API_URL}/server/${serverId}?accessToken=${accessToken.value}`)
     server.value = data
-  } catch (error) {
-    console.error('Error fetching server details:', error)
+    error.value = null
+  } catch (err) {
+    if (err.response && err.response.status === 403) {
+      error.value = 'You do not have permission to access this server\'s settings.'
+    } else {
+      error.value = 'An error occurred while fetching server details.'
+    }
+    console.error('Error fetching server details:', err)
   }
 }
 
@@ -78,24 +96,3 @@ const goBack = () => {
   router.back()
 }
 </script>
-
-<style scoped>
-.loader {
-  border: 8px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top: 8px solid white;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-</style>
