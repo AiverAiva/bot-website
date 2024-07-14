@@ -21,10 +21,15 @@
                         </a>
                     </div>
                 </div>
-            </div> 
-        </div>  
+            </div>
+        </div>
         <div v-else>
-            <h1 class="text-4xl font-bold mb-8 text-white">Please log in to access the dashboard.</h1>
+            <div v-if="isLoading" class="flex items-center justify-center h-64">
+                <Loader />
+            </div>
+            <div v-else>
+                <h1 class="text-4xl font-bold mb-8 text-white">Please log in to access the dashboard.</h1>
+            </div>
         </div>
     </div>
 </template>
@@ -38,6 +43,7 @@ const store = useStore()
 const config = useRuntimeConfig()
 
 const isLoggedIn = ref(false)
+const isLoading = ref(true)
 
 const guilds = computed(() => store.guilds)
 
@@ -47,20 +53,30 @@ const sortedGuilds = computed(() => {
     return guilds.value ? guilds.value.slice().sort((a, b) => b.has_bot - a.has_bot) : []
 })
 
+const hasManageServerPermission = (guild) => {
+    const permissions = BigInt(guild.permissions)
+    const MANAGE_SERVER = BigInt(0x20)
+    return (permissions & MANAGE_SERVER) === MANAGE_SERVER
+}
+
 const defaultIconUrl = 'https://cdn.discordapp.com/embed/avatars/0.png'
 const getIconUrl = (guild) => !guild.icon ? defaultIconUrl : `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`
 const generateInviteLink = (guildId) => `https://discord.com/oauth2/authorize?client_id=${config.public.DISCORD_CLIENT_ID}&permissions=${PERMISSIONS_INTEGER}&scope=bot&guild_id=${guildId}`
 
 onMounted(async () => {
     try {
-        if (guilds) {
+        if (guilds.value.length) {
             isLoggedIn.value = true
         } else {
-            throw new Error("No access token found")
+            const response = await axios.get(`${config.public.API_URL}/user?accessToken=${store.accessToken}`)
+            store.setGuilds(response.data.user_guilds.filter(hasManageServerPermission))
+            isLoggedIn.value = true
         }
     } catch (error) {
+        isLoggedIn.value = false
         console.error("Error fetching data:", error)
+    } finally {
+        isLoading.value = false
     }
 })
-
 </script>
