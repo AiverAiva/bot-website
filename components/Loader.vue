@@ -5,9 +5,9 @@
 <script></script>
 <style>
 .loader {
-  border: 8px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
-  border-top: 8px solid white;
+  border-top: 4px solid white;
   width: 40px;
   height: 40px;
   animation: spin 1s linear infinite;
