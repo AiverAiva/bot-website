@@ -152,7 +152,7 @@ const fetchRoles = async () => {
 
 const addRole = () => {
     if (newLevel.value && selectedRole.value) {
-        module.value.settings.LEVEL_ROLES[newLevel.value] = selectedRole.value
+        module.value.settings.LEVEL_ROLES[Number(newLevel.value)] = selectedRole.value
         levelInputs.value[newLevel.value] = newLevel.value
         newLevel.value = ''
         selectedRole.value = ''
