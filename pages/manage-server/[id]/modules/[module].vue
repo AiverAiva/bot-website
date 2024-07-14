@@ -10,13 +10,13 @@
             <div class="bg-gray-800 p-6 rounded-lg shadow-md mb-6">
                 <h2 class="text-2xl font-semibold mb-4">{{ findModuleName(module) }}</h2>
                 <p>{{ findModuleDescription(module) }}</p>
-                <div class="mt-4">
+                <!-- <div class="mt-4">
                     <label for="module-enabled" class="flex items-center">
                         <input type="checkbox" id="module-enabled" :checked="module.enabled"
                             @change="toggleModule(module)" class="mr-2" />
                         <span>{{ module.enabled ? 'Enabled' : 'Disabled' }}</span>
                     </label>
-                </div>
+                </div> -->
                 <div v-if="module.settings">
                     <div v-for="(value, key) in module.settings" :key="key" class="mt-4">
                         <label :for="key" class="block text-lg font-medium">{{ key }}</label>
@@ -178,17 +178,17 @@ const updateLevel = (oldLevel, newLevel) => {
     }
 }
 
-const toggleModule = async (module) => {
-    module.enabled = !module.enabled
-    try {
-        await axios.post(`${config.public.API_URL}/guild/${serverId}/module`, module, {
-            params: { accessToken: accessToken.value },
-        })
-    } catch (err) {
-        console.error('Error updating module:', err)
-        error.value = 'An error occurred while updating the module.'
-    }
-}
+// const toggleModule = async (module) => {
+//     module.enabled = !module.enabled
+//     try {
+//         await axios.post(`${config.public.API_URL}/guild/${serverId}/module`, module, {
+//             params: { accessToken: accessToken.value },
+//         })
+//     } catch (err) {
+//         console.error('Error updating module:', err)
+//         error.value = 'An error occurred while updating the module.'
+//     }
+// }
 
 const saveSettings = async () => {
     try {
