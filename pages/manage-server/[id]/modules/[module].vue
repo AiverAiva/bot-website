@@ -75,6 +75,9 @@
                 </button>
             </div>
         </div>
+        <!-- <div v-if="!accessToken" class="flex items-center justify-center h-64">
+            <h1 class="text-4xl font-bold mb-8 text-white">Please log in to access the dashboard.</h1>  
+        </div> -->
         <div v-if="isLoading" class="flex items-center justify-center h-64">
             <Loader />
         </div>

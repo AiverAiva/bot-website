@@ -22,14 +22,12 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div v-else>
             <div v-if="isLoading" class="flex items-center justify-center h-64">
                 <Loader />
             </div>
-            <div v-else>
-                <h1 class="text-4xl font-bold mb-8 text-white">Please log in to access the dashboard.</h1>
-            </div>
+        </div>
+        <div v-else>
+            <h1 class="text-4xl font-bold mb-8 text-white">Please log in to access the dashboard.</h1>
         </div>
     </div>
 </template>
@@ -42,9 +40,10 @@ import { useStore } from '~/stores/index'
 const store = useStore()
 const config = useRuntimeConfig()
 
-const isLoggedIn = ref(false)
+const accessToken = computed(() => store.accessToken)
+const isLoggedIn = computed(() => accessToken.value !== null)
 const isLoading = ref(true)
-
+console.log(isLoggedIn.value)
 const guilds = computed(() => store.guilds)
 
 const PERMISSIONS_INTEGER = '268436480'
@@ -65,18 +64,19 @@ const generateInviteLink = (guildId) => `https://discord.com/oauth2/authorize?cl
 
 onMounted(async () => {
     try {
-        if (guilds.value.length) {
-            isLoggedIn.value = true
-        } else {
+        if (accessToken.value && !guilds.value.length) {
             const response = await axios.get(`${config.public.API_URL}/user?accessToken=${store.accessToken}`)
             store.setGuilds(response.data.user_guilds.filter(hasManageServerPermission))
-            isLoggedIn.value = true
         }
+        // else { 
+
+        //     // isLoggedIn.value = true
+        // }
     } catch (error) {
-        isLoggedIn.value = false
+        // isLoggedIn.value = false
         console.error("Error fetching data:", error)
     } finally {
-        isLoading.value = false
+        // isLoading.value = false
     }
 })
 </script>
